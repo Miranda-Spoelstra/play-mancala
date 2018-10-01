@@ -39,5 +39,14 @@ public class Kalaha extends Hole {
 			getNextHole().giveToKalaha(stones, target);
 		}
 	}
+	
+	public Kalaha getWinner() {
+		Kalaha opponent = (Kalaha) findHole(7);
+		if (opponent.getStones() > getStones()) {
+			return opponent;
+		} else {
+			return this;
+		}
+	}
 
 }

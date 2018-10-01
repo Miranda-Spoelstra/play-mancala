@@ -40,4 +40,6 @@ public abstract class Hole {
 	public abstract void giveToKalaha(int stones, Player target);
 
 	public abstract void passStones(int s);
+	
+	public abstract Kalaha getWinner();
 }

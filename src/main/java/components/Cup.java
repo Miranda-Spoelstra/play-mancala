@@ -40,10 +40,7 @@ public class Cup extends Hole {
 	public void passStones(int stones) {
 		addStone();
 		if(stones == 1) {
-			if (getStones() == 1) {
-				checkOpposingCup();
-			}
-			
+			checkOpposingCup();
 			getOwner().switchTurn();
 		} else {
 			stones--;
@@ -52,12 +49,18 @@ public class Cup extends Hole {
 	}
 
 	private void checkOpposingCup() {
-		if(getOwner().hasTurn()) {
+		if (getStones() == 1 && getOwner().hasTurn()) {
 			Cup opposite = findOppositeCup();
-			if(opposite.getStones() != 0) {
-				opposite.giveToKalaha(opposite.getStones(), getOwner());
-				giveToKalaha(getStones(), getOwner());
-			}	
+			stonesToKahala(opposite);
+		}
+	}
+
+	private void stonesToKahala(Cup opposite) {	
+		if(opposite.getStones() != 0) {
+			opposite.giveToKalaha(opposite.getStones(), getOwner());
+			opposite.setStones(0);
+			giveToKalaha(getStones(), getOwner());
+			setStones(0);
 		}
 	}
 
@@ -82,13 +85,11 @@ public class Cup extends Hole {
 	}
 	
 	public void giveToKalaha(int stones, Player target) {
-		setStones(0);
 		getNextHole().giveToKalaha(stones, target);
 	}
 	
 	public boolean gameEnded() {
 		if(getStones() == 0) {
-			System.out.println(getNextHole());
 			if (getNextHole() instanceof Kalaha) {
 				return true;
 			}
@@ -96,5 +97,9 @@ public class Cup extends Hole {
 			return next.gameEnded();
 		}
 		return false;
+	}
+
+	public Kalaha getWinner() {
+		return getNextHole().getWinner();
 	}
 }

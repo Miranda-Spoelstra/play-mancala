@@ -39,5 +39,12 @@ class KalahaTest {
 		current.giveAwayStones();
 		assertFalse(kal.getOwner().hasTurn(), "The turn should have switched to the opponent.");
 	}
+	
+	@Test
+	void getWinner() {
+		Cup cup =  new Cup();
+		cup.findHole(14).setStones(5);
+		assertEquals(cup.findHole(14), cup.getWinner());
+	}
 
 }
