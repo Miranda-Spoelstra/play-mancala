@@ -95,21 +95,29 @@ public class Mancala {
 		}
 		Cup currentCup = (Cup) getStartingCup().findHole(cupNr);
 		currentCup.giveAwayStones();
-		System.out.println("Your move was done succesfully.");
 	}
 
 	private void displayGame() {
 		System.out.println();
+		System.out.println("           Player 2");
+		System.out.println();
+		System.out.println(" <-  6   5   4   3   2   1  <-");
+		System.out.println("-------------------------------");
 		displayCups(-13, -8);
+		System.out.println("   -------------------------");
 		displayCups(1, 6);
+		System.out.println("-------------------------------");
+		System.out.println(" ->  1   2   3   4   5   6  ->");
+		System.out.println();
+		System.out.println("           Player 1");
 		System.out.println();
 	}
 
 	private void displayCups(int start, int finish) {
 		if (finish < 0) {
-			System.out.print(getStartingCup().findHole(Math.abs(start) + 1).getStones() + " | ");
+			System.out.print(" "+getStartingCup().findHole(Math.abs(start) + 1).getStones() + " | ");
 		} else {
-			System.out.print("    ");
+			System.out.print("   | ");
 		}
 		for (int i = start; i <= finish; i++) {
 			System.out.print(getStartingCup().findHole(Math.abs(i)).getStones() + " | ");
