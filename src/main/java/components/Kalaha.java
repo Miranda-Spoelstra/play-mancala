@@ -17,9 +17,7 @@ public class Kalaha extends Hole {
 	public void passStones(int stones) {
 		if (getOwner().hasTurn()) {
 			addStones(1);
-			if (stones == 1) {
-				getOwner().switchTurn();
-			} else {
+			if (stones > 1) {
 				stones--;
 				getNextHole().passStones(stones);
 			}
@@ -48,5 +46,4 @@ public class Kalaha extends Hole {
 			return this;
 		}
 	}
-
 }

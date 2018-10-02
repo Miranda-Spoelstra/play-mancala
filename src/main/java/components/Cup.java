@@ -27,13 +27,13 @@ public class Cup extends Hole {
 	}
 	
 	public void giveAwayStones() {
-		int nrStones = getStones();
+		int stoneAmount = getStones();
 		
-		if (nrStones != 0) {
+		if (stoneAmount != 0 && getOwner().hasTurn()) {
 			setStones(0);
-			getNextHole().passStones(nrStones);
+			getNextHole().passStones(stoneAmount);
 		} else {
-			System.out.println("This cup is empty, you cannot make this move.");
+			System.out.println("You cannot make this move.");
 		}
 	}
 	
@@ -55,10 +55,10 @@ public class Cup extends Hole {
 		}
 	}
 
-	private void stonesToKahala(Cup opposite) {	
-		if(opposite.getStones() != 0) {
-			opposite.giveToKalaha(opposite.getStones(), getOwner());
-			opposite.setStones(0);
+	private void stonesToKahala(Cup oppositeCup) {	
+		if(oppositeCup.getStones() != 0) {
+			oppositeCup.giveToKalaha(oppositeCup.getStones(), getOwner());
+			oppositeCup.setStones(0);
 			giveToKalaha(getStones(), getOwner());
 			setStones(0);
 		}
@@ -70,22 +70,22 @@ public class Cup extends Hole {
 	}
 	
 	public Cup findOppositeCup() { 
-		Hole nextCup = this;
+		Hole currentCup = this;
 		int nrCups = -1;
 
-		while(nextCup instanceof Cup) {
+		while(currentCup instanceof Cup) {
 			nrCups++;
-			nextCup = nextCup.getNextHole();
+			currentCup = currentCup.getNextHole();
 		}
 		while(nrCups > 0) {
 			nrCups--;
-			nextCup = nextCup.getNextHole();
+			currentCup = currentCup.getNextHole();
 		}
-		return (Cup) nextCup;
+		return (Cup) currentCup;
 	}
 	
-	public void giveToKalaha(int stones, Player target) {
-		getNextHole().giveToKalaha(stones, target);
+	public void giveToKalaha(int stones, Player currentPlayer) {
+		getNextHole().giveToKalaha(stones, currentPlayer);
 	}
 	
 	public boolean gameEnded() {
@@ -93,8 +93,8 @@ public class Cup extends Hole {
 			if (getNextHole() instanceof Kalaha) {
 				return true;
 			}
-			Cup next = (Cup) getNextHole();
-			return next.gameEnded();
+			Cup nextCup = (Cup) getNextHole();
+			return nextCup.gameEnded();
 		}
 		return false;
 	}

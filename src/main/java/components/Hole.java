@@ -5,7 +5,7 @@ public abstract class Hole {
 	protected Hole nextHole;
 	protected Player owner;
 
-	protected int getStones() {
+	public int getStones() {
 		return this.stones;
 	}
 
@@ -13,7 +13,7 @@ public abstract class Hole {
 		this.stones = stones;
 	}
 
-	protected Player getOwner() {
+	public Player getOwner() {
 		return this.owner;
 	}
 	
@@ -30,11 +30,7 @@ public abstract class Hole {
 		for (int i = 0; i < distance; i++) {
 			result = result.getNextHole();
 		}
-
-		if (result instanceof Kalaha) {
-			return (Kalaha) result;
-		}
-		return (Cup) result;
+		return result;
 	}
 
 	public abstract void giveToKalaha(int stones, Player target);
