@@ -3,32 +3,37 @@ package components;
 public class Cup extends Hole {
 
 	public Cup() {
-		Player p1 = new Player();
-		this.stones = 4;
-		this.owner = p1;
-		this.nextHole = new Cup(p1, 0, this);
+		Player firstPlayer = new Player();
+		this.stones = STARTING_NUMBER_OF_STONES;
+		this.owner = firstPlayer;
+		this.nextHole = new Cup(firstPlayer, 0, this);
 	}
-	
-	public Cup(Player owner, int index, Cup original) {
-		this.stones = 4;
-		index++;
-		
-		if (index == 8) {
+
+	public Cup(Player owner, int holeNumber, Cup startCup) {
+		this.stones = STARTING_NUMBER_OF_STONES;
+		holeNumber++;
+
+		if (holeNumber == 8) {
 			this.owner = owner.getOpponent();
 		} else {
 			this.owner = owner;
 		}
-		
-		if (index == 6 || index == 13) {
-			this.nextHole = new Kalaha(getOwner(), index, original);
+
+		if (holeNumber == 6 || holeNumber == 13) {
+			this.nextHole = new Kalaha(getOwner(), holeNumber, startCup);
 		} else {
-			this.nextHole = new Cup(getOwner(), index, original);
+			this.nextHole = new Cup(getOwner(), holeNumber, startCup);
 		}
 	}
 	
+	private void addStone() {
+		int newStones = getStones() + 1;
+		setStones(newStones);
+	}
+
 	public void giveAwayStones() {
 		int stoneAmount = getStones();
-		
+
 		if (stoneAmount != 0 && getOwner().hasTurn()) {
 			setStones(0);
 			getNextHole().passStones(stoneAmount);
@@ -36,11 +41,11 @@ public class Cup extends Hole {
 			System.out.println("You cannot make this move.");
 		}
 	}
-	
+
 	public void passStones(int stones) {
 		addStone();
-		if(stones == 1) {
-			checkOpposingCup();
+		if (stones == 1) {
+			checkOppositeCup();
 			getOwner().switchTurn();
 		} else {
 			stones--;
@@ -48,15 +53,30 @@ public class Cup extends Hole {
 		}
 	}
 
-	private void checkOpposingCup() {
+	private void checkOppositeCup() {
 		if (getStones() == 1 && getOwner().hasTurn()) {
-			Cup opposite = findOppositeCup();
-			stonesToKahala(opposite);
+			Cup oppositeCup = findOppositeCup();
+			stonesToKahala(oppositeCup);
 		}
 	}
+	
+	public Cup findOppositeCup() {
+		Hole currentCup = this;
+		int cupCounter = -1;
 
-	private void stonesToKahala(Cup oppositeCup) {	
-		if(oppositeCup.getStones() != 0) {
+		while (currentCup instanceof Cup) {
+			cupCounter++;
+			currentCup = currentCup.getNextHole();
+		}
+		while (cupCounter > 0) {
+			cupCounter--;
+			currentCup = currentCup.getNextHole();
+		}
+		return (Cup) currentCup;
+	}
+
+	private void stonesToKahala(Cup oppositeCup) {
+		if (oppositeCup.getStones() != 0) {
 			oppositeCup.giveToKalaha(oppositeCup.getStones(), getOwner());
 			oppositeCup.setStones(0);
 			giveToKalaha(getStones(), getOwner());
@@ -64,32 +84,12 @@ public class Cup extends Hole {
 		}
 	}
 
-	private void addStone() {
-		int newStones = getStones() + 1;
-		setStones(newStones);
-	}
-	
-	public Cup findOppositeCup() { 
-		Hole currentCup = this;
-		int nrCups = -1;
-
-		while(currentCup instanceof Cup) {
-			nrCups++;
-			currentCup = currentCup.getNextHole();
-		}
-		while(nrCups > 0) {
-			nrCups--;
-			currentCup = currentCup.getNextHole();
-		}
-		return (Cup) currentCup;
-	}
-	
 	public void giveToKalaha(int stones, Player currentPlayer) {
 		getNextHole().giveToKalaha(stones, currentPlayer);
 	}
-	
+
 	public boolean gameEnded() {
-		if(getStones() == 0) {
+		if (getStones() == 0) {
 			if (getNextHole() instanceof Kalaha) {
 				return true;
 			}

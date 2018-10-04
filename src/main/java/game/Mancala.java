@@ -24,8 +24,23 @@ public class Mancala {
 		game.playerTurn();
 	}
 
-	private void playerTurn() {
+	public Player getFirstPlayer() {
+		return this.firstPlayer;
+	}
 
+	protected Cup getStartingCup() {
+		return this.startingCup;
+	}
+
+	private void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
+	}
+
+	private boolean gameOver() {
+		return this.gameOver;
+	}
+
+	private void playerTurn() {
 		try (Scanner userInput = new Scanner(System.in)) {
 			while (!gameOver()) {
 				displayGame();
@@ -38,11 +53,7 @@ public class Mancala {
 				System.out.println("Player " + player + " can make a move now");
 				makeMove(userInput);
 			}
-		}		
-	}
-
-	protected boolean gameOver() {
-		return this.gameOver;
+		}
 	}
 
 	private void gameOverCheck() {
@@ -58,10 +69,6 @@ public class Mancala {
 		}
 	}
 
-	private void setGameOver(boolean gameOver) {
-		this.gameOver = gameOver;
-	}
-
 	private void displayWinner() {
 		Kalaha winner = getStartingCup().getWinner();
 		String winningPlayer = "Player 2";
@@ -74,26 +81,18 @@ public class Mancala {
 		System.out.println(winningPlayer + " is the winner with a score of " + score);
 	}
 
-	public Player getFirstPlayer() {
-		return firstPlayer;
-	}
-
-	protected Cup getStartingCup() {
-		return startingCup;
-	}
-
 	public void makeMove(Scanner userInput) {
 		System.out.println("Make your move by choosing from cup 1 - 6.");
-		int cupNr = userInput.nextInt();
+		int selectedCup = userInput.nextInt();
 
-		if(cupNr > 6) {
-			cupNr = cupNr % 6;
+		if (selectedCup > 6) {
+			selectedCup = selectedCup % 6;
 		}
-		
+
 		if (!getFirstPlayer().hasTurn()) {
-			cupNr += 7;
+			selectedCup += 7;
 		}
-		Cup currentCup = (Cup) getStartingCup().findHole(cupNr);
+		Cup currentCup = (Cup) getStartingCup().findHole(selectedCup);
 		currentCup.giveAwayStones();
 	}
 
@@ -115,7 +114,7 @@ public class Mancala {
 
 	private void displayCups(int start, int finish) {
 		if (finish < 0) {
-			System.out.print(" "+getStartingCup().findHole(Math.abs(start) + 1).getStones() + " | ");
+			System.out.print(" " + getStartingCup().findHole(Math.abs(start) + 1).getStones() + " | ");
 		} else {
 			System.out.print("   | ");
 		}

@@ -1,6 +1,7 @@
 package components;
 
 public abstract class Hole {
+	protected static final int STARTING_NUMBER_OF_STONES = 4;
 	protected int stones;
 	protected Hole nextHole;
 	protected Player owner;
@@ -15,10 +16,6 @@ public abstract class Hole {
 
 	public Player getOwner() {
 		return this.owner;
-	}
-	
-	protected void setNextHole(Hole next) {
-		this.nextHole = next;
 	}
 
 	protected Hole getNextHole() {
@@ -36,6 +33,6 @@ public abstract class Hole {
 	public abstract void giveToKalaha(int stones, Player target);
 
 	public abstract void passStones(int s);
-	
+
 	public abstract Kalaha getWinner();
 }

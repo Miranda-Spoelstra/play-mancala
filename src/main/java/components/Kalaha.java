@@ -2,16 +2,20 @@ package components;
 
 public class Kalaha extends Hole {
 
-	public Kalaha(Player owner, int index, Cup original) {
+	public Kalaha(Player owner, int holeNumber, Cup startCup) {
 		this.stones = 0;
 		this.owner = owner;
-		index++;
+		holeNumber++;
 		
-		if (index == 14) {
-			this.nextHole = original;
+		if (holeNumber == 14) {
+			this.nextHole = startCup;
 		} else {
-			this.nextHole = new Cup(owner, index, original);
+			this.nextHole = new Cup(owner, holeNumber, startCup);
 		}
+	}
+	
+	private void addStones(int stones) {
+		this.stones = getStones() + stones;
 	}
 	
 	public void passStones(int stones) {
@@ -25,16 +29,12 @@ public class Kalaha extends Hole {
 			getNextHole().passStones(stones);
 		}
 	}
-	
-	private void addStones(int stones) {
-		this.stones = getStones() + stones;
-	}
 
-	public void giveToKalaha(int stones, Player target) {
-		if (target.equals(getOwner())) {
+	public void giveToKalaha(int stones, Player currentPlayer) {
+		if (currentPlayer.equals(getOwner())) {
 			addStones(stones);
 		} else {
-			getNextHole().giveToKalaha(stones, target);
+			getNextHole().giveToKalaha(stones, currentPlayer);
 		}
 	}
 	
