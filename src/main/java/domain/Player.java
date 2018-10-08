@@ -22,7 +22,7 @@ public class Player {
 		return this.hasTurn;
 	}
 
-	public void switchTurn() {
+	protected void switchTurn() {
 		hasTurn = !hasTurn;
 		getOpponent().switchTurn("");
 	}

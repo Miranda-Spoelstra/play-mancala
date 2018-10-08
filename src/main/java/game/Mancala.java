@@ -69,12 +69,18 @@ public class Mancala {
 		Kalaha winner = getStartingCup().getWinner();
 		String winningPlayer = "Player 2";
 		int score = winner.getStones();
-
+		
 		if (winner.getOwner().equals(getFirstPlayer())) {
 			winningPlayer = "Player 1";
 		}
 		System.out.println("Game over!");
-		System.out.println(winningPlayer + " is the winner with a score of " + score);
+		
+		if (score == 24) {
+			System.out.println("Gelijkspel");
+		} else {
+			System.out.println(winningPlayer + " is the winner with a score of " + score);
+
+		}
 	}
 
 	public void makeMove(Scanner userInput) {

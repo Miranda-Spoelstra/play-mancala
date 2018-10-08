@@ -28,8 +28,7 @@ public class Cup extends Hole {
 	}
 	
 	private void addStone() {
-		int newStones = getStones() + 1;
-		setStones(newStones);
+		setStones(getStones() + 1);
 	}
 
 	public void giveAwayStones() {
@@ -42,7 +41,7 @@ public class Cup extends Hole {
 		}
 	}
 	
-	public void passStones(int stones) {
+	protected void passStones(int stones) {
 		addStone();
 		if (stones == 1) {
 			emptyOppositeCup();
@@ -60,7 +59,7 @@ public class Cup extends Hole {
 		}
 	}
 	
-	public Cup findOppositeCup() {
+	protected Cup findOppositeCup() {
 		Hole currentCup = this;
 		int cupCounter = 0;
 
@@ -82,7 +81,7 @@ public class Cup extends Hole {
 		}
 	}
 
-	public void giveToKalaha(int stones, Player currentPlayer, int counter) {
+	protected void giveToKalaha(int stones, Player currentPlayer, int counter) {
 		counter++;
 		getNextHole().giveToKalaha(stones, currentPlayer, counter);
 		if (counter == 1) {
@@ -105,7 +104,7 @@ public class Cup extends Hole {
 		return getNextHole().getWinner();
 	}
 
-	public void emptyAllCups() {
+	protected void emptyAllCups() {
 		giveToKalaha(getStones(), getOwner(), 0);
 		Hole currentCup = getNextHole();
 		

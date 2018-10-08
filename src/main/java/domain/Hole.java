@@ -10,7 +10,7 @@ public abstract class Hole {
 	}
 
 	protected void setStones(int stones) {
-		this.stones = stones;
+		this.stones = Math.abs(stones);
 	}
 
 	public Player getOwner() {
@@ -29,9 +29,9 @@ public abstract class Hole {
 		return result;
 	}
 
-	public abstract void giveToKalaha(int stones, Player target, int counter);
+	protected abstract void giveToKalaha(int stones, Player target, int counter);
 
-	public abstract void passStones(int s);
+	protected abstract void passStones(int s);
 
 	public abstract Kalaha getWinner();
 }

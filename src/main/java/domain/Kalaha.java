@@ -14,10 +14,10 @@ public class Kalaha extends Hole {
 	}
 	
 	private void addStones(int stones) {
-		this.stones = getStones() + stones;
+		this.stones = getStones() + Math.abs(stones);
 	}
 	
-	public void passStones(int stones) {
+	protected void passStones(int stones) {
 		if (getOwner().hasTurn()) {
 			addStones(1);
 			if (stones > 1) {
@@ -29,7 +29,7 @@ public class Kalaha extends Hole {
 		}
 	}
 
-	public void giveToKalaha(int stones, Player currentPlayer, int counter) {
+	protected void giveToKalaha(int stones, Player currentPlayer, int counter) {
 		if (currentPlayer.equals(getOwner())) {
 			addStones(stones);
 		} else {
