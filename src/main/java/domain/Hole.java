@@ -1,7 +1,6 @@
-package components;
+package domain;
 
 public abstract class Hole {
-	protected static final int STARTING_NUMBER_OF_STONES = 4;
 	protected int stones;
 	protected Hole nextHole;
 	protected Player owner;
@@ -24,13 +23,13 @@ public abstract class Hole {
 
 	public Hole findHole(int distance) {
 		Hole result = this;
-		for (int i = 0; i < distance; i++) {
+		for (int i = 1; i < distance; i++) {
 			result = result.getNextHole();
 		}
 		return result;
 	}
 
-	public abstract void giveToKalaha(int stones, Player target);
+	public abstract void giveToKalaha(int stones, Player target, int counter);
 
 	public abstract void passStones(int s);
 

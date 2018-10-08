@@ -1,8 +1,10 @@
-package components;
+package domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import domain.Player;
 
 class PlayerTest {
 

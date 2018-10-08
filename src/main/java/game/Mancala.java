@@ -2,9 +2,7 @@ package game;
 
 import java.util.Scanner;
 
-import components.Cup;
-import components.Kalaha;
-import components.Player;
+import domain.*;
 
 public class Mancala {
 	private Player firstPlayer;
@@ -19,8 +17,6 @@ public class Mancala {
 
 	public static void main(String[] args) {
 		Mancala game = new Mancala();
-		// MancalaGUI gui = new MancalaGUI(game);
-		// gui.display();
 		game.playerTurn();
 	}
 
@@ -43,8 +39,8 @@ public class Mancala {
 	private void playerTurn() {
 		try (Scanner userInput = new Scanner(System.in)) {
 			while (!gameOver()) {
-				displayGame();
 				gameOverCheck();
+				displayGame();
 
 				String player = "one";
 				if (!getFirstPlayer().hasTurn()) {
@@ -82,18 +78,21 @@ public class Mancala {
 	}
 
 	public void makeMove(Scanner userInput) {
-		System.out.println("Make your move by choosing from cup 1 - 6.");
+		while (!userInput.hasNextInt()) {
+			System.out.println("Make your move by choosing from cup 1 - 6.");
+			userInput.next();
+		}
 		int selectedCup = userInput.nextInt();
-
-		if (selectedCup > 6) {
-			selectedCup = selectedCup % 6;
+		if (selectedCup > 0 && selectedCup < 7) {
+			if (!getFirstPlayer().hasTurn()) {
+				selectedCup += 7;
+			}
+			Cup currentCup = (Cup) getStartingCup().findHole(selectedCup);
+			currentCup.giveAwayStones();
+		} else {
+			System.out.println("Invalid input, try again.");
+			makeMove(userInput);
 		}
-
-		if (!getFirstPlayer().hasTurn()) {
-			selectedCup += 7;
-		}
-		Cup currentCup = (Cup) getStartingCup().findHole(selectedCup);
-		currentCup.giveAwayStones();
 	}
 
 	private void displayGame() {

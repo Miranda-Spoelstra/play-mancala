@@ -1,4 +1,4 @@
-package components;
+package domain;
 
 public class Kalaha extends Hole {
 
@@ -6,7 +6,6 @@ public class Kalaha extends Hole {
 		this.stones = 0;
 		this.owner = owner;
 		holeNumber++;
-		
 		if (holeNumber == 14) {
 			this.nextHole = startCup;
 		} else {
@@ -30,20 +29,22 @@ public class Kalaha extends Hole {
 		}
 	}
 
-	public void giveToKalaha(int stones, Player currentPlayer) {
+	public void giveToKalaha(int stones, Player currentPlayer, int counter) {
 		if (currentPlayer.equals(getOwner())) {
 			addStones(stones);
 		} else {
-			getNextHole().giveToKalaha(stones, currentPlayer);
+			getNextHole().giveToKalaha(stones, currentPlayer, counter);
 		}
 	}
 	
 	public Kalaha getWinner() {
-		Kalaha opponent = (Kalaha) findHole(7);
+		((Cup) getNextHole()).emptyAllCups();
+		Kalaha opponent = (Kalaha) findHole(8);
 		if (opponent.getStones() > getStones()) {
 			return opponent;
 		} else {
 			return this;
 		}
 	}
+	
 }

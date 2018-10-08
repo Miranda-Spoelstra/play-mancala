@@ -1,8 +1,12 @@
-package components;
+package domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import domain.Cup;
+import domain.Hole;
+import domain.Kalaha;
 
 class CupTest {
 
@@ -85,7 +89,7 @@ class CupTest {
 		Cup cup = new Cup();
 		Cup currentCup = (Cup) cup.findHole(3);
 		Cup opposite = currentCup.findOppositeCup();
-		assertFalse(opposite.getOwner().hasTurn(), "The owner of this cup should not be the current player");
+		assertSame(opposite, cup.findHole(11), "The wrong cup is found as the opposite");
 	}
 
 	@Test
@@ -105,14 +109,13 @@ class CupTest {
 		Cup currentCup = (Cup) cup.findHole(4);
 		currentCup.giveAwayStones();
 		assertEquals(1, cup.findHole(7).getStones(), "The kalaha should have 1 stone");
-		assertEquals(5, currentCup.findHole(4).getStones(), "The hole after the kalaha should have an extra stone");
+		assertEquals(5, cup.findHole(8).getStones(), "The hole after the kalaha should have an extra stone");
 	}
 
 	@Test
 	void testKalahaDifferentOwner() {
 		Cup cup = new Cup();
-		assertNotEquals(cup.findHole(7).getOwner(), cup.findHole(14).getOwner(),
-				"The kalaha's should have different owners");
+		assertNotSame(cup.findHole(7).getOwner(), cup.findHole(14).getOwner(), "The kalaha's should have different owners");
 	}
 
 	@Test
@@ -138,10 +141,24 @@ class CupTest {
 		Cup cup = new Cup();
 		cup.setStones(0);
 		Cup currentCup = cup;
-		for (int i = 0; i < 6; i++) {
+		for (int i = 1; i < 6; i++) {
 			currentCup = (Cup) currentCup.getNextHole();
 			currentCup.setStones(0);
 		}
 		assertTrue(cup.gameEnded(), "Game should be over");
+	}
+	
+	@Test
+	void rightAmountOfCups() {
+		Cup cup = new Cup();
+		
+		int stoneCount = cup.getStones();
+		Hole currentCup = cup.getNextHole();
+		while (!currentCup.equals(cup)) {
+			stoneCount += currentCup.getStones();
+			currentCup = currentCup.getNextHole();
+		}
+		
+		assertEquals(48, stoneCount);
 	}
 }
